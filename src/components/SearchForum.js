@@ -3,7 +3,7 @@ import {Text, View, StyleSheet, TextInput, Pressable, TouchableOpacity } from 'r
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons'; 
 
-const SearchForum = () => {
+const SearchForum = ({ onSearch }) => {
 
 
   const [from , setFrom] = useState('');
@@ -18,7 +18,7 @@ const SearchForum = () => {
 
 
   const onSearchPress = () => {
-    console.log({ departDate , from , returnDate, to });
+    onSearch({ departDate , from , returnDate, to });  
   }
 
 
