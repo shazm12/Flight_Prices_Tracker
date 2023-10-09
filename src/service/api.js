@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-const url =  "http://192.168.0.104:3000";
+const url =  "API_URL";
 
 export  const searchFlights = async({ from , to, departDate , returnDate }) => {
 
