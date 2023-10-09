@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import {Text, View, StyleSheet, TextInput, Pressable, TouchableOpacity } from 'react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons'; 
+import AiportCodeInput from './AirportCodeInput';
+import dayjs from 'dayjs';
 
-const SearchForum = ({ onSearch }) => {
+const SearchForum = ({ onSearch, airportsData }) => {
 
 
   const [from , setFrom] = useState('');
@@ -11,7 +13,6 @@ const SearchForum = ({ onSearch }) => {
 
   const [isDepartDatePickerVisible, setDepartDatePickerVisibility] = useState(false);
   const [isReturnDatePickerVisible, setReturnDatePickerVisibility] = useState(false);
-
 
   const [departDate, setDepartDate ] = useState(new Date());
   const [returnDate, setReturnDate ] = useState(new Date());
@@ -42,11 +43,6 @@ const SearchForum = ({ onSearch }) => {
     }
   };
 
-  const handleReturnDateConfirm = (date) => {
-    setReturnDate(date || new Date());
-    hideDatePicker("return");
-  };
-
   const onPressDatePicker = (stateToChange) => {
     if(stateToChange === "depart") {
       setDepartDatePickerVisibility(true);
@@ -61,15 +57,19 @@ const SearchForum = ({ onSearch }) => {
   return (
     <View style={styles.container}>
         <Text style={styles.title}>Search the best prices for your next trip</Text>
-        <TextInput value={from} onChangeText={setFrom} style={styles.input} placeholder='From' />
-        <TextInput value={to} onChangeText={setTo} style={styles.input} placeholder='To' />
-       
+        
+        <AiportCodeInput placeholder={"From City Name Or Code..."} value={from} setValue={setFrom} airportsData={airportsData}  />
+        
+        <AiportCodeInput placeholder={"To City Name Or Code..."} value={to} setValue={setTo} airportsData={airportsData}  />
+        
         <DateTimePickerModal
           isVisible={isDepartDatePickerVisible}
           mode="date"
           onConfirm={(date) =>  handleDateConfirm(date, "depart") }
           onCancel={() => hideDatePicker("depart")}
+          locale="en_GB"
           minimumDate={departDate}
+          
 
         />
         <DateTimePickerModal
@@ -77,13 +77,14 @@ const SearchForum = ({ onSearch }) => {
           mode="date"
           onConfirm={(date) => handleDateConfirm(date, "return")}
           onCancel={() => hideDatePicker("return")}
+          locale="en_GB"
           minimumDate={returnDate}
 
         />
         <View style={styles.dateContainer}>
           <TouchableOpacity onPress={() => onPressDatePicker("depart")} style={styles.date}>
             <MaterialIcons name="date-range" size={20} color="black" />
-            <Text>{departDate.toLocaleDateString() || 'No Date Selected!'}</Text>
+            <Text style= {{ fontSize: 12 }} >{dayjs(departDate).format("D MMMM YYYY") || 'No Date Selected!'}</Text>
           </TouchableOpacity>
           <View style={styles.planeIconContainer}>
             <Text>--</Text>
@@ -92,7 +93,7 @@ const SearchForum = ({ onSearch }) => {
           </View>
           <TouchableOpacity onPress={() => onPressDatePicker("return")} style={styles.date}>
             <MaterialIcons name="date-range" size={20} color="black" />
-            <Text>{returnDate.toLocaleDateString() || 'No Date Selected!'}</Text>
+            <Text style= {{ fontSize: 12 }}>{dayjs(returnDate).format("D MMMM YYYY") || 'No Date Selected!'}</Text>
           </TouchableOpacity>  
         
         </View>
@@ -155,9 +156,8 @@ const styles = StyleSheet.create({
     },
 
     date: {
-
       backgroundColor: "#eeeeee",
-      padding: 8,
+      padding: 5,
       borderRadius: 5,
       shadowColor: "#000",
       flexDirection: 'row',

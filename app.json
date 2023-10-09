@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "FlightPricesApp",
-    "slug": "FlightPricesApp",
+    "name": "FlyTripChecker",
+    "slug": "FlyTripChecker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
